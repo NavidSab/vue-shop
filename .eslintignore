@@ -1,0 +1,3 @@
+**/*.js
+/* eslint-disable */
+eslint --ignore-pattern '!.build' --ignore-pattern '.build/*' --ignore-pattern '!.build/test.js' parent-folder/
