@@ -7,6 +7,7 @@ import 'popper.js';
 import './assets/app.scss';
 import Swal from 'sweetalert2';
 import $ from 'jquery';
+import "bootstrap";
 
 window.$=jQuery;
 

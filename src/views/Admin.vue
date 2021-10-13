@@ -88,7 +88,7 @@
         </nav>
         <!-- sidebar-content  -->
         <main class="page-content">
-            <router-view/>
+          <router-view/>
         </main>
         <!-- page-content" -->
     </div>
