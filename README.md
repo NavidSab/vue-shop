@@ -1,5 +1,10 @@
 # shop
+## Requirements
+  vue js 3
 
+  firebase 9
+
+  
 ## Project setup
 ```
 npm install
