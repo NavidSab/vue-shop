@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div class="profile">
       <div class="container">
           
         <div class="intro h-100">
@@ -23,11 +23,11 @@
           <ul class="nav nav-pills ml-3" id="myTab" role="tablist">
 
             <li class="nav-item">
-              <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
+              <a class="nav-link active" id="profile-tab"  data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Profile</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link"  id="account-tab" data-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">Account settings</a>
+              <a class="nav-link"  id="account-tab"  data-bs-toggle="tab" href="#account" role="tab" aria-controls="account" aria-selected="false">Account settings</a>
             </li>
            
           </ul>
@@ -119,7 +119,7 @@
 
                         <div class="col-md-4">
                           <div class="form-group">
-                              <input type="button" @click="resetPassword"value="Reset password email" class="btn btn-success w-100">
+                              <input type="button" @click="resetPassword" value="Reset password email" class="btn btn-success w-100">
                           </div>
                         </div>
                       </div>
@@ -137,18 +137,13 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
-import { fb, db} from '../firebase';
 
 export default {
   name: "profile",
-  components: {
-    VueEditor
-  },
+
   props: {
     msg: String
   },
-
   data(){
     return {
         profile: {
@@ -168,34 +163,6 @@ export default {
             uid:null
         }       
     }
-  },
-
-  firestore(){
-      const user = fb.auth().currentUser;
-      return {
-        profile: db.collection('profiles').doc(user.uid),
-      }
-  },
-  methods:{
-      resetPassword(){
-          const auth = fb.auth();          
-
-          auth.sendPasswordResetEmail(auth.currentUser.email).then(() =>  {
-               Toast.fire({
-                type: 'success',
-                title: 'Email sent'
-              })
-          }).catch((error) =>  {
-              console.log(error);
-          });
-      },
-
-      updateProfile(){
-          this.$firestore.profile.update(this.profile);
-      },
-      uploadImage(){}
-  },
-  created(){
   }
 
 };

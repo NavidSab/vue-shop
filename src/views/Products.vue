@@ -25,12 +25,15 @@
             <h3 class="d-inline-block">Products list</h3>
             <button @click="addNew" class="btn btn-primary float-right">Add Product</button>
 
-          
+            <div class="table-responsive">
+              
+               
+            </div>
+
           </div>
       </div>
 
-
-
+ 
     
   </div>
 </template>
@@ -44,9 +47,7 @@ export default {
     msg: String
   },
 
- }
-
-
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

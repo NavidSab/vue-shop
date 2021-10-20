@@ -1,48 +1,36 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import Vue from 'vue';
 import router from "./router";
-import jQuery from 'jquery';
-import 'popper.js';
-import './assets/app.scss';
-import Swal from 'sweetalert2';
-import $ from 'jquery';
+import "popper.js";
 import "bootstrap";
+import "@/assets/app.scss";
+import jQuery from "jquery";
+import {fb} from "./firebase";
 
-window.$=jQuery;
+const Vue = createApp(App);
 
-window.Swal = Swal;
+window.$ =window.jQuery=jQuery;
 
-const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 3000
+
+
+
+
+
+
+Vue.component("Navbar", require("@/components/Navbar.vue").default);
+Vue.component("Hero", require("@/components/Hero.vue").default);
+Vue.component("ProductList", require("@/sections/ProductList.vue").default);
+Vue.component("Login", require("@/components/Login.vue").default);
+
+
+let app = '';
+fb.auth().onAuthStateChanged(function() {
+
+  if(!app){
+    createApp(App).use(router).mount("#app");
+  }
+
 });
-
-window.Toast = Toast;
-
-//global variable
-window.$=window.jQuery=jQuery;
-
-
-//component
-import Navbar from "./components/Navbar.vue";
-import Hero from   "./components/Hero.vue";
-import AddToCart from   "./components/AddToCart.vue";
-// import MiniCart from   "./components/MiniCart.vue";
-// import ProductList from   "./components/ProductList.vue";
-
-
-
-const app = createApp(App);
-app.component('Navbar', Navbar);
-app.component('Hero', Hero);
-// app.component('products-list', ProductList);
-// app.component('mini-cart', MiniCart);
-app.component('add-to-cart', AddToCart);
-
-app.use(router).mount("#app");
 
 
 

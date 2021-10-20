@@ -88,7 +88,7 @@
         </nav>
         <!-- sidebar-content  -->
         <main class="page-content">
-          <router-view/>
+            <router-view/>
         </main>
         <!-- page-content" -->
     </div>
@@ -102,7 +102,7 @@
 
 <script>
 // @ is an alias to /src
-import $ from 'jquery';
+import {fb} from '../firebase';
 
 export default {
   name: "admin",
@@ -112,23 +112,30 @@ export default {
           email:null,
       }
   },
-
+ 
   methods:{
       closeMenu(){
-       $(".page-wrapper").toggleClass("toggled");
+        $(".page-wrapper").toggleClass("toggled");
       },
       logout(){
-
+          fb.auth().signOut()
+          .then(() => {
+              this.$router.replace('/');
+          })
+          .catch((err) =>{
+              console.log(err);
+          });
       }
   },
 
-  created(){
+//   created(){
+//       let user = fb.auth().currentUser;
+//       this.email = user.email;
 
-  }
+//   }
 };
 </script>
 
 <style>
 
 </style>
-

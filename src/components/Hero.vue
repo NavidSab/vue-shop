@@ -10,10 +10,10 @@
                 <p>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos numquam tempora, iure delectus totam minus quam aperiam ratione dolores magni voluptates ut necessitatibus odio ipsum fuga, voluptas ab praesentium nihil?
                 </p>
-                <div class="hero-btn mt-5">
-                    <button class="btn btn-primary m-4">Explore</button>
-                    <button class="btn btn-success">Products</button>
-                </div>
+              <div class="d-grid gap-2 col-6 mx-auto">
+  <button class="btn btn-primary" type="button">Button</button>
+  <button class="btn btn-primary" type="button">Button</button>
+</div>
               </div>
             </div>
             <div class="col-md-7">
