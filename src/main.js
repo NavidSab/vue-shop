@@ -7,6 +7,9 @@ import "@/assets/app.scss";
 import jQuery from "jquery";
 import { fb } from "./firebase";
 import Swal from 'sweetalert2';
+// import VueSweetalert2 from 'vue-sweetalert2';
+
+
 window.Swal = Swal;
 const Toast = Swal.mixin({
     toast: true,

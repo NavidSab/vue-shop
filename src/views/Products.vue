@@ -17,7 +17,7 @@
           <hr>
           <div class="product-test">
             <h3 class="d-inline-block">Products list</h3>
-            <button @click="addNew" class="btn btn-primary float-right">Add Product</button>
+            <button @click="addNew" class="btn btn-primary float-end">Add Product</button>
             <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -36,8 +36,8 @@
                           {{product.price}}
                         </td>
                         <td>
-                          <button class="btn btn-primary" @click="editProduct(product)">Edit</button>
-                          <button class="btn btn-danger" @click="deleteProduct(product)">Delete</button>
+                          <button class="btn btn-primary mx-2" @click="editProduct(product)">Edit</button>
+                          <button class="btn btn-danger mx-2" @click="deleteProduct(product.key)">Delete</button>
                         </td>
                       </tr>
                   </tbody>
@@ -50,30 +50,31 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editLabel">Edit Product</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+              <h5 class="modal-title" id="newLabel" v-if="modal == 'new'">New Product</h5>
+              <h5 class="modal-title" id="editLabel" v-if="modal == 'edit'">Edit Product</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                
               </button>
             </div>
             <div class="modal-body">
                 <div class="row">
                   <!-- main product -->
                   <div class="col-md-8">
-                    <div class="form-group">
+                    <div class="m-3">
                       <input type="text" placeholder="Product Name" v-model="product.name" class="form-control">
                     </div>
-                    <div class="form-group">
-                      <!-- <vue-editor v-model="product.description"></vue-editor> -->
+                    <div class="m-3">
+                      <VueEditor v-model="product.description"></VueEditor>
                     </div>
                   </div>
                   <!-- product sidebar -->
                   <div class="col-md-4">
                     <h4 class="display-6">Product Details</h4>
                     <hr>
-                    <div class="form-group">
+                    <div class="m-3">
                       <input type="text" placeholder="Product price" v-model="product.price" class="form-control">
                     </div>
-                    <div class="form-group">
+                    <div class="m-3">
                       <!-- <input type="text" v-on:keyup.188="addTag" placeholder="Product tags" v-model="tag" class="form-control"> -->
                       <div  class="d-flex">
                         <!-- <p v-for="tag in product.tags">
@@ -97,9 +98,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button @click="addProduct()" type="button" class="btn btn-primary" v-if="modal == 'new'">Save changes</button>
-              <button @click="updateProduct()" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
+              <button @click="updateProduct(product.key)" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
             </div>
           </div>
         </div>
@@ -107,13 +108,13 @@
   </div>
 </template>
 <script>
-// import { VueEditor } from "vue2-editor";
-import { fb, db} from '../firebase';
+import { VueEditor } from "vue3-editor";
+import { db} from '../firebase';
 export default {
   name: "Products",
-  // components: {
-  //   VueEditor
-  // },
+  components: {
+    VueEditor
+  },
   props: {
     msg: String
   },
@@ -124,54 +125,29 @@ export default {
           name:null,
           description:null,
           price:null,
-          tags:[],
-          images:[]
         },
         activeItem:null,
         modal: null,
-        tag: null
     }
   },
-  firestore(){
-      return {
-        products: db.collection('products'),
-      }
-  },
+   created() {
+            db.collection('products').onSnapshot((snapshotChange) => {
+                this.products = [];
+                snapshotChange.forEach((doc) => {
+                    this.products.push({
+                        key: doc.id,
+                        name: doc.data().name,
+                        description: doc.data().description,
+                        price: doc.data().price
+                    })
+                });
+            })
+        },
+
   methods:{
-    deleteImage(img,index){
-      let image = fb.storage().refFromURL(img);
-      this.product.images.splice(index,1);
-      image.delete().then(function() {
-        console.log('image deleted');
-      }).catch(function(error) {
-        console.log(error);
-        // Uh-oh, an error occurred!
-        console.log('an error occurred');
-      });
-    },
-    addTag(){
-       this.product.tags.push(this.tag);
-       this.tag = "";
-    },
-    uploadImage(e){
-      if(e.target.files[0]){
-          let file = e.target.files[0];
-          var storageRef = fb.storage().ref('products/'+ Math.random() + '_'  + file.name);
-          let uploadTask  = storageRef.put(file);
-          uploadTask.on('state_changed', (snapshot) => {
-            console.log(snapshot);
-          }, (error) => {
-            console.log(error);
-            // Handle unsuccessful uploads
-          }, () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-              this.product.images.push(downloadURL);
-            });
-          });
-      }
-    },
+
+ 
+   
     reset(){
       this.product = {
           name:null,
@@ -182,55 +158,77 @@ export default {
       }
     },
     addNew(){
+      console.log(this.products);
         this.modal = 'new';
         this.reset();
         $('#product').modal('show');
     },
-    updateProduct(){
-        this.$firestore.products.doc(this.product.id).update(this.product);
-          Toast.fire({
-            type: 'success',
-            title: 'Updated  successfully'
-          })
-           $('#product').modal('hide');
+    updateProduct(id){
+        //  Toast.fire({
+        //     type: 'success',
+        //     title: 'Updated  successfully'
+        //   })
+          db.collection('products').doc(id)
+          .update(this.product).then(() => {
+            confirm('User successfully updated!');
+            $('#product').modal('hide');
+            }).catch((error) => {
+            console.log(error);
+           });
+          
     },
     editProduct(product){
       this.modal = 'edit';
       this.product = product;
       $('#product').modal('show');
     },
-    deleteProduct(doc){
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.value) {
-          this.$firestore.products.doc(doc.id).delete()
-          Toast.fire({
-            type: 'success',
-            title: 'Deleted  successfully'
-          })
-        }
-      })
+    deleteProduct(id){
+              if (window.confirm("Do you really want to delete?")) {
+                db.collection("products").doc(id).delete().then(() => {
+                    console.log("Product deleted!");
+                     confirm('Product deleted!');
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+              }
+            
+        
+      // Swal.fire({
+      //   title: 'Are you sure?',
+      //   text: "You won't be able to revert this!",
+      //   type: 'warning',
+      //   showCancelButton: true,
+      //   confirmButtonColor: '#3085d6',
+      //   cancelButtonColor: '#d33',
+      //   confirmButtonText: 'Yes, delete it!'
+      // }).then((result) => {
+      //   if (result.value) {
+      //     this.$firestore.products.doc(doc.id).delete()
+      //     Toast.fire({
+      //       type: 'success',
+      //       title: 'Deleted  successfully'
+      //     })
+      //   }
+      // })
     },
     readData(){
     },
     addProduct(){
-      this.$firestore.products.add(this.product);
-          Toast.fire({
-            type: 'success',
-            title: 'Product created successfully'
-          })
-      $('#product').modal('hide');
+     db.collection('products').add(this.product).then(() => {
+          // Toast.fire({
+          //   type: 'success',
+          //   title: 'Product created successfully'
+          // })
+          confirm('Product created successfully');
+            this.reset();
+            $('#product').modal('hide');
+          }).catch((error) => {
+            console.log(error);
+        });
     }
   },
-  created(){
-  }
+  
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
