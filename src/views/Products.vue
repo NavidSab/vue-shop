@@ -75,24 +75,24 @@
                       <input type="text" placeholder="Product price" v-model="product.price" class="form-control">
                     </div>
                     <div class="m-3">
-                      <!-- <input type="text" v-on:keyup.188="addTag" placeholder="Product tags" v-model="tag" class="form-control"> -->
+                      <input type="text" v-on:keyup.enter="addTag" placeholder="Product tags" v-model="tag" class="form-control">
                       <div  class="d-flex">
-                        <!-- <p v-for="tag in product.tags">
+                        <p v-for="tag in product.tags" v-bind:key="tag">
                             <span class="p-1">{{tag}}</span>
-                        </p> -->
+                        </p>
                       </div>
                     </div>
-                    <div class="form-group">
+                    <div class="m-3">
                       <label for="product_image">Product Images</label>
                       <input type="file" @change="uploadImage" class="form-control">
                     </div>
-                    <div class="form-group d-flex">
-                      <!-- <div class="p-1" v-for="(image, index) in product.images">
+                    <div class="m-3 d-flex">
+                      <div class="p-1" v-for="(image, index) in product.images" v-bind:key="image">
                           <div class="img-wrapp">
-                              <img :src="image" alt="" width="80px">
+                              <img :src="image" alt="" class="product-image">
                               <span class="delete-img" @click="deleteImage(image,index)">X</span>
                           </div>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -109,7 +109,7 @@
 </template>
 <script>
 import { VueEditor } from "vue3-editor";
-import { db} from '../firebase';
+import { fb,db} from '../firebase';
 export default {
   name: "Products",
   components: {
@@ -125,9 +125,13 @@ export default {
           name:null,
           description:null,
           price:null,
+          tags:[],
+          images:[]
         },
         activeItem:null,
         modal: null,
+        tag: null
+
     }
   },
    created() {
@@ -138,7 +142,10 @@ export default {
                         key: doc.id,
                         name: doc.data().name,
                         description: doc.data().description,
-                        price: doc.data().price
+                        price: doc.data().price,
+                        tags: doc.data().tags,
+                        images: doc.data().images
+
                     })
                 });
             })
@@ -146,7 +153,10 @@ export default {
 
   methods:{
 
- 
+   addTag(){
+       this.product.tags.push(this.tag);
+       this.tag = "";
+    },
    
     reset(){
       this.product = {
@@ -171,6 +181,7 @@ export default {
           db.collection('products').doc(id)
           .update(this.product).then(() => {
             confirm('User successfully updated!');
+             this.reset();
             $('#product').modal('hide');
             }).catch((error) => {
             console.log(error);
@@ -181,6 +192,29 @@ export default {
       this.modal = 'edit';
       this.product = product;
       $('#product').modal('show');
+    },
+     uploadImage(e){
+      if(e.target.files[0]){
+        
+          let file = e.target.files[0];
+    
+          var storageRef = fb.storage().ref('products/'+ Math.random() + '_'  + file.name);
+    
+          let uploadTask  = storageRef.put(file);
+    
+
+
+          uploadTask.on(`state_changed`,snapshot=>{
+          this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+            }, error=>{console.log(error.message)},
+          ()=>{
+              this.uploadValue=100;
+              uploadTask.snapshot.ref.getDownloadURL().then((downloadURL)=>{
+                this.product.images.push(downloadURL);
+                });
+          });
+ 
+      }
     },
     deleteProduct(id){
               if (window.confirm("Do you really want to delete?")) {
@@ -243,5 +277,8 @@ export default {
 }
 .img-wrapp span.delete-img:hover{
   cursor: pointer;
+}
+.product-image{
+  width:100px 
 }
 </style>
