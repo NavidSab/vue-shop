@@ -39,31 +39,31 @@
                       <div class="row">
                         
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text" name="" v-model="profile.name" placeholder="Full name" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="profile.phone" placeholder="Phone" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-12">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="profile.address" placeholder="Address" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-8">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="profile.postCode" placeholder="Postcode" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="m-3">
                               <input type="submit" @click="updateProfile" value="Save Changes" class="btn btn-primary w-100">
                           </div>
                         </div>
@@ -82,43 +82,43 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="account.name" placeholder="User name" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="account.email" placeholder="Email address" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text"  v-model="account.password" placeholder="New password" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-6">
-                          <div class="form-group">
+                          <div class="m-3">
                             <input type="text" v-model="account.confirmPassword"  placeholder="Confirm password" class="form-control">
                           </div>
                         </div>
 
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="m-3">
                               <input type="file" @change="uploadImage" class="form-control">
                            </div>
                         </div>
 
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="m-3">
                               <input type="submit" value="Save Changes" class="btn btn-primary w-100">
                           </div>
                         </div>
 
                         <div class="col-md-4">
-                          <div class="form-group">
+                          <div class="m-3">
                               <input type="button" @click="resetPassword" value="Reset password email" class="btn btn-success w-100">
                           </div>
                         </div>
