@@ -16,9 +16,11 @@
         "popper.js": "^1.16.1",
         "sweetalert2": "^11.1.9",
         "vue": "^3.0.0",
+        "vue-carousel": "^0.18.0",
         "vue-router": "^4.0.0-0",
         "vue-sweetalert2": "^5.0.2",
         "vue2-editor": "^2.10.3",
+        "vue3-carousel": "^0.1.29",
         "vue3-editor": "^0.1.0-alpha.3",
         "vuefire": "^2.2.5"
     },

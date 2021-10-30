@@ -132,6 +132,7 @@ export default {
   },
   created(){ 
       let user = fb.auth().currentUser;
+      this.name= user.name; 
       this.email =user.email;  
    }
 };
