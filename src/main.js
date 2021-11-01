@@ -8,6 +8,7 @@ import jQuery from "jquery";
 import { fb } from "./firebase";
 import Swal from 'sweetalert2';
 // import VueSweetalert2 from 'vue-sweetalert2';
+import store from './store.js';
 
 
 window.Swal = Swal;
@@ -25,9 +26,11 @@ Vue.component("Navbar", require("@/components/Navbar.vue").default);
 Vue.component("Hero", require("@/components/Hero.vue").default);
 Vue.component("ProductList", require("@/sections/ProductList.vue").default);
 Vue.component("Login", require("@/components/Login.vue").default);
+Vue.component('AddToCart', require('./components/AddToCart.vue').default);
+
 let app = '';
 fb.auth().onAuthStateChanged(function() {
     if (!app) {
-        createApp(App).use(router).mount("#app");
+        createApp(App).use(router, store).mount("#app");
     }
 });

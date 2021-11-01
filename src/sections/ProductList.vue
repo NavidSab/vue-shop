@@ -7,12 +7,7 @@
           <div class="card product-item">
             <carousel :items-to-show="1">
               <slide v-for="image in product.images" :key="image" class="mr-2">
-                <img
-                  :src="image"
-                  class="card-img-top"
-                  alt="..."
-                   
-                />
+                <img :src="image" class="card-img-top" alt="..." />
               </slide>
 
               <template #addons>
@@ -24,9 +19,18 @@
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <h5 class="card-title">{{ product.name }}</h5>
-                <h5 class="card-priceS">{{ product.price }}</h5>
+                <h5 class="card-priceS">{{ formatPrice(product.price) }}</h5>
               </div>
+              <div class="d-flex  justify-content-center m-3">
+                                 <AddToCart 
+                                :image="getImage(product.images)"
+                                :p-id="product.id"
+                                :price="product.price"
+                                :name="product.name">
+                            </AddToCart>
+                            </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -38,12 +42,14 @@
 import { db } from "../firebase";
 import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination, Navigation } from "vue3-carousel";
+  import AddToCart from "@/components/AddToCart.vue";
 
 export default {
   name: "Products-list",
   components: {
     Carousel,
     Slide,
+    AddToCart,
     Pagination,
     Navigation,
   },
@@ -58,7 +64,13 @@ export default {
   },
 
   methods: {
-   
+    formatPrice(price) {
+      return "$" + price;
+    },
+        getImage(images){
+      return images[0];
+    }
+
   },
 
   created() {
@@ -86,8 +98,8 @@ export default {
   background: #f2f2f2;
   padding-bottom: 3rem;
 }
-.card-img-top{
+.card-img-top {
   height: 200px;
-  weight:250px ;
+  weight: 250px;
 }
 </style>
