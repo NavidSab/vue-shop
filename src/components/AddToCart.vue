@@ -28,6 +28,7 @@ export default {
 
       }
   },
+
   methods:{
     addToCart(){
       $('#miniCart').modal('show');

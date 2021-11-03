@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <Login></Login>
+    <MiniCart></MiniCart>
     <Navbar></Navbar>
     <Hero></Hero>
     <ProductList></ProductList>
@@ -28,13 +29,16 @@
   import Hero from "@/components/Hero.vue";
   import ProductList from "@/sections/ProductList.vue";
   import Login from "@/components/Login.vue";
+  import MiniCart from "@/components/MiniCart.vue";
+
   export default {
     name: "home",
     components: {
       Navbar,
       Hero,
       ProductList,
-      Login
+      Login,
+      MiniCart
     }
   };
 </script>

@@ -31,6 +31,6 @@ Vue.component('AddToCart', require('./components/AddToCart.vue').default);
 let app = '';
 fb.auth().onAuthStateChanged(function() {
     if (!app) {
-        createApp(App).use(router, store).mount("#app");
+        createApp(App).use(router).use(store).mount("#app");
     }
 });
