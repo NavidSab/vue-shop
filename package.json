@@ -39,6 +39,7 @@
         "prettier": "^2.2.1",
         "sass": "^1.26.5",
         "sass-loader": "^8.0.2",
-        "sweetalert2": "^11.1.9"
+        "sweetalert2": "^11.1.9",
+        "vue-stripe-elements-plus": "^1.0.2"
     }
 }
